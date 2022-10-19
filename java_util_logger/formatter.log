@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-05-04T22:27:09.153627200Z</date>
+  <millis>1651703229153</millis>
+  <nanos>627200</nanos>
+  <sequence>0</sequence>
+  <logger>java_util_logger.FormatterExample</logger>
+  <level>INFO</level>
+  <class>java_util_logger.FormatterExample</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Finnest message: Logger with DEFAULT FORMATTER</message>
+</record>
+May 05, 2022 12:27:09 AM java_util_logger.FormatterExample main
+FINEST: Finnest message: Logger with SIMPLE FORMATTER

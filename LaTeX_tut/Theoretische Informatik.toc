@@ -1,0 +1,9 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {section}{\numberline {1}Einführung}{3}{}%
+\contentsline {subsection}{\numberline {1.1}Unterteilung der Informatik}{3}{}%
+\contentsline {subsection}{\numberline {1.2}Warum braucht man THI?}{3}{}%
+\contentsline {subsection}{\numberline {1.3}Praktische Anwendung der THI}{3}{}%
+\contentsline {subsection}{\numberline {1.4}Alphabet, Grammatiken, Sprachen}{3}{}%
+\contentsline {section}{\numberline {2}Grammatiknormalformen ÜBERSPRUNGEN}{7}{}%
+\contentsline {section}{\numberline {3}Reguläre Sprachen und endliche Automaten}{8}{}%
+\contentsline {subsection}{\numberline {3.1}Endliche Automaten}{9}{}%

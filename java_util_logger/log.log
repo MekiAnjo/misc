@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-05-04T22:26:52.997481Z</date>
+  <millis>1651703212997</millis>
+  <nanos>481000</nanos>
+  <sequence>0</sequence>
+  <logger>java_util_logger.HandlerExample</logger>
+  <level>CONFIG</level>
+  <class>java_util_logger.HandlerExample</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Configuration done.</message>
+</record>
+<record>
+  <date>2022-05-04T22:26:53.027480600Z</date>
+  <millis>1651703213027</millis>
+  <nanos>480600</nanos>
+  <sequence>1</sequence>
+  <logger>java_util_logger.HandlerExample</logger>
+  <level>FINE</level>
+  <class>java_util_logger.HandlerExample</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Finer logged</message>
+</record>
+<record>
+  <date>2022-05-04T22:26:53.037506300Z</date>
+  <millis>1651703213037</millis>
+  <nanos>506300</nanos>
+  <sequence>2</sequence>
+  <logger>java_util_logger.HandlerExample</logger>
+  <level>FINER</level>
+  <class>java_util_logger.HandlerExample</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Finest example or LOGGER handler completed.</message>
+</record>
+</log>

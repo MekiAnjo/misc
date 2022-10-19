@@ -1,0 +1,477 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+% \usetikzlibrary{arrows,automata,positioning,shapes,shadows,calc,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,decorations.text,decorations.pathreplacing,decorations.pathmorphing,decorations.markings,shapes.geometric,shapes.misc,shapes.symbols,shapes.arrows,shapes.callouts,shapes.multipart,shapes,positioning,arrows,automata,shadows,calc}
+\usetikzlibrary{automata, positioning, arrows}
+\title{Theoretische Informatik}
+\author{Tony Khoa Nam Huynh}
+
+\usepackage[
+top    = 2.75cm,
+bottom = 2.00cm,
+left   = 3.00cm,
+right  = 2.50cm]{geometry}
+
+% \oddsidemargin 0cm
+% \textwidth 16cm
+% \textheight 22cm
+% \topmargin -1cm
+% \footnotesize
+\newcommand{\Lagr}{\mathcal{L}}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}   %turns of page numbers
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Einführung}
+
+Sie Studieren Informatik an einer HAW, und jetzt kommt die Theoretische Informatik.
+Warum?!
+
+\subsection{Unterteilung der Informatik}
+
+% TODO Hier Grafik des Hauses der IT hinzufügen
+
+Die zentrale Fragestellung ist, was ist (wenn überhaupt) mit welchen Aufwand berechenbar? Die THI teilt alle Probleme in sog. Sprachklassen ein, bei denen sich der Lösungsaufwand unterscheidet auf Zeit, Speicherplatz, Zugriffsmöglichkeit (Array, Stake)
+
+\subsection{Warum braucht man THI?}
+
+Szenario: Ihr Chef beauftragt Sie ein Problem zu lösen, welches wenn es nicht innerhalb von 4 Wochen gelöst die Pleite der Firma bedeutet.
+
+\begin{enumerate}[1)]
+    \item Problem wurde nach 2 Wochen gelöst
+    \item Es findet sich keine optimale und schnelle Lösung
+          \begin{enumerate}
+              \item [2a)] `Chef, ich bin zu doof'
+              \item [2b)] "Chef, das Problem ist nicht unlösbar, aber es gibt Tausende ähnliche Probleme, die auch alle nicht gelöst sind"
+              \item [2c)] "Chef, es ist unlösbar"
+          \end{enumerate}
+\end{enumerate}
+
+\subsection{Praktische Anwendung der THI}
+
+\begin{enumerate}[1)]
+    \item Suchen und Ersetzen in Texten:
+
+          Lösche Leerzeichen aus einem Text, ersetze Punkte am Zeilenende durch Semikolon
+    \item Einlesen von CSV-Dateien
+          \begin{itemize}[-]
+              \item Pro Tabellenzeile ein Textzeile
+              \item Pro Felder getrennt durch ','
+              \item Text in \textquotedblleft \textquotedblright verpackt
+              \item "Innerhalb von \textquotedblleft\textquotedblright wird als \textquotedblleft\textquotedblright geschrieben (immer ungerade Anzahl)
+              \item Auswerten von arithmetischen Ausdrücken
+          \end{itemize}
+\end{enumerate}
+
+\subsection{Alphabet, Grammatiken, Sprachen}
+
+\begin{flushleft}
+
+    In der THI werden Problem als Entscheidungsfragen formuliert. Man fragt nicht `Wie weit ist es von Stuttgart nach München', sondern `Gibt es einen Weg von Stuttgart nach München, der höchstes 220 km lang ist.'
+    \vspace{1em}
+
+    Anstelle offene Fragen `Wie lang damit die Auslieferung dieser 5 Punkte benötigt' die geschlossene Frage `lassen sich diese 5 Punkte in 2:15 zustellen?'
+    \vspace{1em}
+
+    Die Eingaben müssen in einem vordefinierten Format (unter anderem mit definierten Symbolen) verfügbar sein.
+    \vspace{1em}
+
+    Diese Symbolmenge heißt Alphabet:
+
+    % \begin{tcolorbox}[title = "Symbolmenge", colback = white, colframe = black, coltitle = black, colbacktitle = white, fonttitle = \bfseries]"]
+    \begin{tcolorbox}[title = Definition 1.1]
+        Ein Alphabet \( \sum = \{\sum_1,\ldots,\sum_n\}\) ist eine endliche Menge von Symbolen.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Beispiel 1.1, colbacktitle = white, coltitle = black, colframe = black, colback = white, fonttitle = \bfseries]
+
+        Beispiel 1.1: \{'A', \ldots, 'Z', 'a', \ldots, 'z'\} ist das latinische Alphabet, \{'public', 'private', 'protected', 'class', 'abstract', \ldots, 'while'\} ist das Alphabet der reservierten Java-Wörter.
+    \end{tcolorbox}
+    \vspace{1em}
+
+    Die Menge der Java-Bezeichner oder -Zahlen bildet kein Alphabet, weil sie nicht endlich ist.
+
+    \begin{tcolorbox}[title = Definition 1.2]
+        Das Alphabet \(\sum\) ist \(\sum^+\) die Menge aller nicht-leeren Folgen von Elementen aus \linebreak  \(\sum, \sum^* = \sum^+ \cup \: \{\varepsilon\}\). Man nennt \(\sum^*_0\) auch das Wort-Monoid (Ein \emph{Monoid} ist eine algebraische Struktur, bestehend aus einer Menge U, einer assoziativen binären Verknüpfung und einem neutralen Element, ein typisches Beispiel ist (\(\mathbf{N_0}, +\)) oder (\(\mathbf{N}, ^*\))).
+    \end{tcolorbox}
+
+
+    \begin{tcolorbox}[title = Definition 1.3]
+        Eine \emph{Sprache} \(\Lagr\) über dem Alphabet \(\sum\) ist eine beliebige Teilmenge \(\sum^*\). Die \emph{charakteristische Funktion} \(_\mathcal{XL}\) von \(\Lagr\) ist definiert durch:
+        \vspace{1em}
+        \begin{center}
+            \( _\mathcal{XL}(\text{w}) = \begin{cases}
+                0 & \text{falls w} \notin \mathcal{L} \\
+                1 & \text{falls w} \in \mathcal{L}
+            \end{cases}\)
+        \end{center}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.4]
+        Eine Folge \(\text{w} = \text{w}_1,\:\ldots, \text{w}_n,\: \text{w}_i \in \sum\)
+        heißt \emph{Wort über} \(\sum\), die Länge \textit{l}(w) ist n. Die Länge von \(\varepsilon\) ist 0.
+    \end{tcolorbox}
+
+    Anders als in natürliche Sprache, gibt es in der THI immer auch eine Grammatik, welche die Regeln definiert, nach denen die Sprache gebildet wird:
+
+
+    \begin{tcolorbox}[title = Definition 1.5]
+        Eine \emph{Grammatik} G = (V, T, P, S) besteht aus den vier Teilen
+
+        \begin{description}
+            \item\emph{V (Variable, auch Nichtterminale)}, das sind die Symbole, die innerhalb einer Ableitung, aber nicht im fertigen Wort, auftreten dürfen.
+
+            \item\emph{T (Terminale)}, das sind die Symbole, die im fertigen Wort auftauchen dürfen.
+
+            \item\emph{P (Produktionen)}, diese definieren die Regeln, nach denen die Ableitung vorgenommen werden darf.
+
+            \item\emph{S (Startsymbol)}, der Ausgangspunkt der Ableitung.
+        \end{description}
+
+    \end{tcolorbox}
+
+    Beispiele für Grammatiken sind Ganzzahlen in Java, sowie korrekt geklammerte arithmetische Ausdrücke
+
+    \begin{tcolorbox}[title = Beispiel 1.2, colbacktitle = white, coltitle = black, colframe = black, colback = white, fonttitle = \bfseries]
+        \begin{description}
+            \item\emph{V} = \{S, D, Z\}
+
+            \item\emph{T} = \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, \textit{-}\}
+
+            \item\emph{P} = \(\{S \rightarrow DZ, D \rightarrow 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9, Z \rightarrow DZ | \varepsilon\}\)
+
+            \item\emph{S} = S
+        \end{description}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Beispiel 1.3, colbacktitle = white, coltitle = black, colframe = black, colback = white, fonttitle = \bfseries]
+        \begin{description}
+            \item\emph{V} = \{S, E, T, F\}
+
+            \item\emph{T} = \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, \textit{-}, \textit{+}, \textit{*}, \textit{/}, \textit{(}, \textit{)}\}
+
+            \item\emph{P} = \(\{S \rightarrow E, E \rightarrow E + T | E - T | T, T \rightarrow T * F | T / F | F, F \rightarrow (E) | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9\}\)
+
+            \item\emph{S} = S
+        \end{description}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.6]
+        Eine Grammatik heißt:
+        \begin{description}
+
+            \item[rechteslinear] (regulär, Typ-3), wenn auf der linken Seite jeder PRoduktion genau ein Nicht-Terminal steht und auf der rechten Seite höchstens eines, zu dem muss es, falls es auftritt, das letzte Symbol sein. \linebreak Zu den rechslinearen Grammatiken gibt es mutatis mutandis auch die linklinearen Grammatiken.
+                \item[linear], wenn auf der rechten Seite jeder Produktion höchstens ein Nichtterminal auftaucht (linke Seite wie gehabt).
+
+                \item\emph{kontextfrei}, (Typ-2) wenn auf der rechten Seite eine beliebige Folge von Terminalen und Nichtterminalen steht (linke Seite wie gehabt).
+
+                \item\emph{kontextsensitiv}, (Typ-1) wenn die rechte Seite nicht kürzer als die linke ist, wobei die letztgenannte ebenfalls eine beliebige nichtleere Folge von Terminalen und Nichtterminalen sein dar.
+
+                \item\emph{strukturiert}, (Typ-0) wenn die rechte Seite beliebig und die linke Seite beliebig(aber nicht leer) sein kann.
+        \end{description}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Beispiel 1.4, colbacktitle = white, coltitle = black, colframe = black, colback = white, fonttitle = \bfseries]
+
+
+
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.7]
+        Eine (nichtleere) Folge von Symbolen aus V \(\cup\) T heißt \emph{Wortform} wenn mindestens ein Symbol aus V enthalten ist. Besteht die Folge nur aus Elementen von T, so heißt sie ein \emph{Wort}.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.8]
+        Eine Folge von Wortformen bzw. Worten \(\text{WF}_1, \ldots \text{WF}_n\) heißt \emph{Ableitung} des Wortes W, aus der Grammatik G, wenn:
+        \begin{itemize}[-]
+            \item \(\text{WF}_1 = \text{S}\) ist
+
+            \item \(\text{WF}_n = \text{W}\) ist
+
+            \item
+                  \begin{flushleft}
+                      \(\text{WF}_i = \text{XLZ, WF}_{i+1} = \text{XRZ}\),\linebreak \(\text{L} \rightarrow \text{R} \in \text{P}\)
+
+                      Man schreibt in diesem Fall:
+
+                      \(\text{WF}_i \rightarrow \text{WF}_{i+1}\), \(S \xrightarrow{\text{n}} W, \text{bzw. } S \xrightarrow{\text{*}} W\)
+                  \end{flushleft}
+        \end{itemize}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.9]
+        Eine Ableitung heißt \emph{Linksableitung} (nur bei Typ-2-Sprachen relevant), wenn immer das am weitesten links stehende Nichtterminal abgeleitet wird.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.10]
+        Die von einer Grammatik G \emph{erzeugte Sprache} \(\Lagr_{\text{G}}\) ist die Menge aller ableitbaren Worte.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.11]
+        Zwei Grammatiken G und G' heißen \emph{äquivalent}, wenn \(\Lagr_{\text{G}} = \Lagr_{\text{G'}}\).
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Definition 1.12]
+        Eine Produktion L \(\rightarrow\) R \(\in\) P heißt \emph{Kettenproduktionen}, wenn R genau einem Nichtterminal besteht, sie heißt \(\varepsilon\) - Produktion, wenn R = \(\varepsilon\) ist.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Satz 1.1]
+        \begin{flushleft}
+            \textit{Sei G eine Typ-2- oder Typ-3-Grammatik mit \(\varepsilon \notin \Lagr_G \text{. Dann gibt es eine äquivalente } \varepsilon \text{- freie Typ-2- oder Typ-3-Grammatik.}\)}
+        \end{flushleft}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Satz 1.1 Beweis, colbacktitle = white, coltitle = black, colframe = black, colback = white, fonttitle = \bfseries]
+
+        Man konstruiert die äquivalente Grammatik, indem man die \(\varepsilon\)- Produktion `nach vorne zieht'. Anstelle einer Ableitung A \(\rightarrow\) bC, gefolgt von C \(\rightarrow \varepsilon\) leitet man direkt A \(\rightarrow\) b ab.
+
+        Ggf. muss hier die Produktion A \(\rightarrow\) b die Produktionsmenge hinzugefügt werden.
+
+        Das leitet der folgende Algorithmus:
+
+        \begin{flushleft}
+            \begin{itemize}[-]
+                \item Ermittle Mengen der Variablen, aus denen \(\varepsilon\) ableitbar ist, d.h. x \(\rightarrow \varepsilon \in P\), diese sei E.
+                \item wiederhole, bis \(P\) stabil ist: \linebreak Für alle Produktionen L \(\rightarrow\) R in \(P\): \linebreak Wenn R eine Variable aus E enthält, dann füge die verkürzte Regel L \(\rightarrow\) R' in P ein. Wobei R' aus R durch Streichung einer Variable aus E entsteht. \linebreak Wenn R' = \(\varepsilon\), dann füge L in E ein.
+                \item Lösche alle \(\varepsilon\) - Produktionen aus \(P\).
+            \end{itemize}
+
+            Bew.: Sei A \(\rightarrow WF_1 \rightarrow WF_2 \rightarrow \ldots \rightarrow WF_n = w\) eine Ableitung unter der ursprünglichen Grammatik
+
+            Ann.: Der i-te Schritt sei \(\text{WF}_i = \text{LXR} \rightarrow \text{LR} = \text{WF}_{i+1}\). Dann wurde X in einem früheren Ableitungsschritt aus einem V ein Y erzeugt, z.B. durch die Produktion Y - L' X R ! Aufgrund der Konstruktion gibt es nun eine Produktion Y \(\rightarrow\) L' R'. Damit ist das Wort auch in der neuen Grammatik
+
+
+
+        \end{flushleft}
+    \end{tcolorbox}
+
+    Rückrichtung:
+
+    Ann.: Sei A \(\rightarrow WF_1 \rightarrow WF_2 \rightarrow \ldots \rightarrow WF_n = w\) eine Ableitung unter der neuen Grammatik. Wir verwenden im Schritt \(WF_i \rightarrow WF_{i+1}\) eine Regel(Produktion), die so in der alten Grammatik nicht existierte. Dann existiert eine Regel mit zusätzliche Variable auf der rechten Seite, die alle direkt oder indirekt zu \(\varepsilon\) ableitbar waren. Damit ist die Ableitung auch in der alten Grammatik möglich.
+
+    \vspace{1cm}
+
+    Eine andere Technik, die unter Umständen hilfreich ist, betrift die Elimination von Kettenproduktionen:
+
+    \begin{tcolorbox}[title = Satz 1.2]
+        \begin{flushleft}
+            \textit{Sei G = (V, T, P, S) eine Typ-2- oder Typ-3-Grammatik mit Kettenproduktionen. Dann gibt es eine zu G äquivalente Typ-2- oder Typ-3-Grammatik ohne Kettenproduktionen.}
+        \end{flushleft}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Satz 1.2 Beweis, colbacktitle = white, coltitle = black, colframe = black, colback = white, fonttitle = \bfseries]
+        \begin{flushleft}
+            \begin{itemize}[-]
+                \item Ermittle alle Kettenproduktionen, d.h. Produktionen, die die Form A \(\rightarrow\) B C haben, wobei B und C Variablen sind. Diese sei K.
+                \item Füge für jede Kettenproduktion A \(\rightarrow\) B C die Produktionen A \(\rightarrow\) B' und B' \(\rightarrow\) C in P ein.
+                \item Lösche alle Kettenproduktionen aus P.
+            \end{itemize}
+        \end{flushleft}
+    \end{tcolorbox}
+
+\end{flushleft}
+
+\section{Grammatiknormalformen ÜBERSPRUNGEN}
+
+\newpage
+
+\section{Reguläre Sprachen und endliche Automaten}
+
+
+\begin{flushleft}
+
+    Wir wechseln von den allgemeinen Grammatiken zu den einfachsten Sprachen, den damit verbundenen Grammatiken und den für die Erkennung notwendingen Mechanismen.Die typische Anwendung besteht nicht in der Erzeugung von Werten, sondern um ihre Erkennung.
+
+    Als Beispiel betrachten wir den javac:
+
+    \begin{itemize}[-]
+        \item Prüfe, ob der Wert zur Sprache gehört
+        \item Falls ja, übersetze das Wort in die Zielsprache unter Nutzung der Information aus der Ableitung
+        \item Falls nein `make an educated guess', welcher Fehler aufgetreten ist, und setze die Übersetzung so gut wie möglich fort.
+    \end{itemize}
+
+    Die einfachsten Sprachen der Chomsky-Hierarchie sind die regulären oder Typ-3-Sprachen, diese haven vielfältige Anwendungen.
+
+    \begin{itemize}[-]
+        \item Reguläre Ausdrücke zur Beschreibung von Programmiersprachen (z.B. in den JLS, Pro1, \ldots)
+        \item Entprellen von Tastaturen mit Rollover und Wiederholung
+        \item Erkennung von Barcodes und Dotcodes mit Hw. unbekannte Tastrate und Auflösung
+    \end{itemize}
+
+    Betrachten wir das Problem der Tastaturentprellung mit Wiederholung und Rollover.
+
+    Zur Lösung dieses Problems mit minimalen Speicherplatz reicht 1 Byte pro Taste aus.
+    \begin{itemize}[-]
+        \item Wird eine Taste gedrückt, schließt und öffnet der Kontakt mehrmals kurz hintereinander. Die Steuerung muss eine bestimmte Zeit abwarten, bevor das 1. Zeichen erkannt wird.
+        \item Nach einer weiteren Wartezeit beginnt die Wiederholung
+        \item Wird dann eine andere Taste gedrückt, so gerät die erste Taste in einen Sperrzustand, d.h. die Wiederholung startet nicht oder stopp.
+    \end{itemize}
+
+    Nebenbedingungen:
+    \begin{itemize}[-]
+        \item kein Busy Wait, d.h. zwischen zwei Tastenabfragen steht der Mikro-Controller für andere Aufgaben zur Verfügung.
+        \item Nur sehr wenig RAM, z.B. 512 Byte.
+    \end{itemize}
+
+    Relevant sind 3 Ereignisse:
+    \begin{itemize}[-]
+        \item Taste gedrückt \(\Longrightarrow\) P
+        \item Taste loslassen  \(\Longrightarrow\) R
+        \item Andere Taste gedrückt  \(\Longrightarrow\) O
+    \end{itemize}
+
+    Wir erstellen ein Modell mit mehreren Zuständen:
+
+    \begin{itemize}[-]
+        \item Inaktiv: taste loslassen
+        \item Gesperrt: Taste war aktiv, andere Taste später gedrückt
+        \item Aktiv\_x: Taste wurde vor x Zyklen gedrückt
+    \end{itemize}
+
+    \begin{tikzpicture}
+        \node[state, initial] (I) {\(I\)};
+        \node[state, right=of I] (A1) {\(A_1\)};
+        \node[state, right=of A1] (A2) {\(A_2\)};
+        \node[state, right=of A2] (A3) {\(A_3\)};
+        \node[state, right=of A3] (A4) {\(A_4\)};
+        \node[state, right=of A4] (A5) {\(A_5\)};
+
+        \node[state, below=of I] (G) {\(G\)};
+
+        \node[state, below=of G] (A18) {\(A_{18}\)};
+        \node[state, right=of A18] (dots1) {\(\ldots\)};
+        \node[state, right=of dots1] (A15) {\(A_{15}\)};
+        \node[state, right=of A15] (dots2) {\(\ldots\)};
+        \node[state, right=of dots2] (A7) {\(A_{7}\)};
+        \node[state, right=of A7] (A6) {\(A_{6}\)};
+
+        \draw[->] (I) edge[above] node {\(P\)} (A1)
+        (A1) edge[above] node {\(R, P\)} (A2)
+        (A2) edge[above] node {\(P, R\)} (A3)
+        (A3) edge[above] node {\(P, R\)} (A4)
+        (A4) edge[above] node {\(P, R\)} (A5)
+
+        (A5) edge[bend left=10,above] node {\(P\)} (G)
+        (A4) edge[bend left=10,above] node {\(P\)} (G)
+        (A3) edge[bend left=10,above] node {\(P\)} (G)
+        (A2) edge[bend left=10,above] node {\(P\)} (G)
+        (A1) edge[bend left=10,above] node {\(P\)} (G)
+        % (A5) edge[above] node {\(P\)} (G)
+        % (A4) edge[above] node {\(P\)} (G)
+        % (A3) edge[above] node {\(P\)} (G)
+        % (A2) edge[above] node {\(P\)} (G)
+        % (A1) edge[above] node {\(P\)} (G)
+
+        (G) edge[bend right, above] node {\(R\)} (I)
+
+        (A5) edge[bend left, above] node {\(P\)} (A6)
+        (A6) edge[above] node {\(P\)} (A7)
+        (A7) edge[above] node {\(P\)} (dots2)
+        (dots2) edge[above] node {\(P\)} (A15)
+        (A15) edge[above] node {\(P\)} (dots1)
+        (dots1) edge[above] node {\(P\)} (A18)
+
+        (A6) edge[bend right=10, looseness=1, above] node {\(P\)} (G)
+        (A7) edge[bend right=10, above] node {\(P\)} (G)
+        (A15) edge[bend right=10, above] node {\(P\)} (G)
+        (A18) edge[bend right, above] node {\(P\)} (G)
+        % (A6) edge[bend right, above] node {\(P\)} (G)
+        % (A7) edge[bend right, above] node {\(P\)} (G)
+        % (A15) edge[bend right, above] node {\(P\)} (G)
+        % (A18) edge[bend right, above] node {\(P\)} (G)
+
+        (A18) edge[bend left, above] node {\(P\)} (A15)
+
+        (A6) edge[bend left=100, looseness = 2] node {\(R\)} (I)
+        (A7) edge[bend left= 90,looseness = 2] node {\(R\)} (I)
+        (A15) edge[bend left= 105,looseness = 2] node {\(R\)} (I)
+        (A18) edge[bend left= 90,looseness = 2] node {\(R\)} (I)
+        ;
+    \end{tikzpicture}
+
+
+    \subsection{Endliche Automaten}
+
+    Allgemein lässt sich ein endlicher Automat wie folgt definieren:
+
+    % \begin{itemize}[-]
+    %     \item Endliche Automaten sind ein Modell für die Erkennung von Sprachen
+    %     \item Die Sprache wird durch einen endlichen Automaten erkannt
+    %     \item Der Automat hat einen Zustand und einen Eingabewert
+    %     \item Der Automat hat einen Zustandsübergangsfunktion
+    %     \item Der Automat hat einen Endzustand
+    % \end{itemize}
+
+    \begin{itemize}[-]
+        \item Als Diagramm mit beschrifteten Übergängen \begin{description}
+                  \item einem Startzustand, markiert durch
+                        \begin{tikzpicture}
+                            \node[state, initial]{};
+                        \end{tikzpicture}
+                        % \begin{tikzpicture}
+                        %     \draw[->] (0,0) -- (2,0);
+                        %     \draw (0,0) circle (0.2);
+                        %     \draw (2,0) circle (0.2);
+                        %     \draw (1,0) node[above] {$\rightarrow$};
+                        % \end{tikzpicture}
+                  \item einem oder mehrere Engzustünden, markiert durch
+                        \begin{tikzpicture}
+                            \node[state, accepting]{};
+                        \end{tikzpicture}
+              \end{description}
+        \item Durch Angabe der Zustände, Eingaben, Übergangsfunktionen und Zielzustände, dies führt zur folgenden Definition:
+    \end{itemize}
+
+    \begin{tcolorbox}[title = Definition 3.1]
+        Ein \emph{endlicher Automat} ist ein 5-Tupel \((Q, \Sigma, \delta, q_0, F)\), wobei
+        \begin{itemize}[-]
+            \item \(Q\) eine endliche Menge von Zuständen ist
+            \item \(\Sigma\) eine endliche Menge von Eingaben ist
+            \item \(\delta: Q \times \Sigma \rightarrow Q\) ist eine Zustandsübergangsfunktion
+            \item \(q_0 \in Q\) ist ein Startzustand
+            \item \(F \subseteq Q\) ist eine Menge von Endzuständen
+        \end{itemize}
+    \end{tcolorbox}
+
+    Gemäß Def. 3.1 kann ein Automat nur einzelne Zeichen verarbeiten, wir verallgemeinern daher \(\delta\) wie folgt:
+
+    \begin{tcolorbox}[title = Definition 3.2]
+        Für einen endlichen Automaten ist die erweiterte Zustandsübergangsfunktion \(\delta^*\) definiert durch:
+
+        \begin{equation*}
+            \hat{\delta}_n(q, w_1 \ldots w_n) = \begin{cases}
+                q,                                                      & \text{falls } n = 0\:(w = \varepsilon) \\
+                \delta(q, w_1),                                         & \text{falls } n = 1                    \\
+                \delta(\hat{\delta}_{n-1}(q, w_1, \ldots w_{n-1}, w_n)) & \text{falls } n \geq 2
+            \end{cases}
+        \end{equation*}
+
+        % \begin{equation*}
+        %     \delta^*(q_0, w) = \delta^*(\delta(q_0, w_1), w_2) = \ldots = \delta^*(\delta^*(q_0, w_1), w_2) = \ldots = \delta^*(\delta^*(\ldots, w_{n-1}), w_n)
+        % \end{equation*}
+        Für ein beliebiges w \(\in \Sigma^*\) mit \(|w| = m\) definieren wir \(\hat{\delta}(q, w)\) = \(\hat{\delta}_m(q, w)\).
+
+        Oft ist \(\delta\) und damit auch \(\hat{\delta}\) nicht total, d.h. für eine Kombination aus \((q, w)\) ist kein Nachfolgezustand definiert. In diesen Fall `hängt' der Automat, d.h. er befindet sich in `keinem' Zustand.
+
+    \end{tcolorbox}
+
+\end{flushleft}
+
+\newpage
+
+
+\end{document}
