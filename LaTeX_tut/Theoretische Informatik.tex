@@ -7,8 +7,22 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage[most]{tcolorbox}
 \usepackage{tikz}
-% \usetikzlibrary{arrows,automata,positioning,shapes,shadows,calc,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,decorations.text,decorations.pathreplacing,decorations.pathmorphing,decorations.markings,shapes.geometric,shapes.misc,shapes.symbols,shapes.arrows,shapes.callouts,shapes.multipart,shapes,positioning,arrows,automata,shadows,calc}
 \usetikzlibrary{automata, positioning, arrows}
+
+\definecolor{bln_blue}{HTML}{00A8FF}
+\definecolor{bln_red}{HTML}{c23616}
+\definecolor{bln_green}{HTML}{16A085}
+\definecolor{bln_magenta}{HTML}{9B59B6}
+
+%#8c7ae6
+\tikzset{
+% -&gt;,  % makes the edges directed
+% &gt;=stealth', % makes the arrow heads bold stealth
+% node distance=4cm, % specifies the minimum distance between two nodes. Change if necessary.
+% every state/.style={thick, fill=bln_blue}, % sets the properties for each ’state’ node
+% initial text =\(\) , % sets the text that appears on the start arrow
+}
+% \usetikzlibrary{arrows,automata,positioning,shapes,shadows,calc,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,decorations.text,decorations.pathreplacing,decorations.pathmorphing,decorations.markings,shapes.geometric,shapes.misc,shapes.symbols,shapes.arrows,shapes.callouts,shapes.multipart,shapes,positioning,arrows,automata,shadows,calc}
 \title{Theoretische Informatik}
 \author{Tony Khoa Nam Huynh}
 
@@ -343,21 +357,21 @@ Szenario: Ihr Chef beauftragt Sie ein Problem zu lösen, welches wenn es nicht i
     \end{itemize}
 
     \begin{tikzpicture}
-        \node[state, initial] (I) {\(I\)};
-        \node[state, right=of I] (A1) {\(A_1\)};
-        \node[state, right=of A1] (A2) {\(A_2\)};
-        \node[state, right=of A2] (A3) {\(A_3\)};
-        \node[state, right=of A3] (A4) {\(A_4\)};
-        \node[state, right=of A4] (A5) {\(A_5\)};
+        \node[state, initial,fill = green] (I) {\(I\)};
+        \node[state, right=of I , fill = bln_blue] (A1) {\(A_1\)};
+        \node[state, right=of A1, fill = bln_blue] (A2) {\(A_2\)};
+        \node[state, right=of A2, fill = bln_blue] (A3) {\(A_3\)};
+        \node[state, right=of A3, fill = bln_blue] (A4) {\(A_4\)};
+        \node[state, right=of A4, fill = bln_blue] (A5) {\(A_5\)};
 
-        \node[state, below=of I] (G) {\(G\)};
+        \node[state, below=of I, fill = bln_red] (G) {\(G\)};
 
-        \node[state, below=of G] (A18) {\(A_{18}\)};
-        \node[state, right=of A18] (dots1) {\(\ldots\)};
-        \node[state, right=of dots1] (A15) {\(A_{15}\)};
-        \node[state, right=of A15] (dots2) {\(\ldots\)};
-        \node[state, right=of dots2] (A7) {\(A_{7}\)};
-        \node[state, right=of A7] (A6) {\(A_{6}\)};
+        \node[state, below=of G     ,fill = bln_blue] (A18) {\(A_{18}\)};
+        \node[state, right=of A18   ,fill = bln_blue] (dots1) {\(\ldots\)};
+        \node[state, right=of dots1 ,fill = bln_blue] (A15) {\(A_{15}\)};
+        \node[state, right=of A15   ,fill = bln_blue] (dots2) {\(\ldots\)};
+        \node[state, right=of dots2 ,fill = bln_blue] (A7) {\(A_{7}\)};
+        \node[state, right=of A7    ,fill = bln_blue] (A6) {\(A_{6}\)};
 
         \draw[->] (I) edge[above] node {\(P\)} (A1)
         (A1) edge[above] node {\(R, P\)} (A2)
@@ -420,7 +434,7 @@ Szenario: Ihr Chef beauftragt Sie ein Problem zu lösen, welches wenn es nicht i
         \item Als Diagramm mit beschrifteten Übergängen \begin{description}
                   \item einem Startzustand, markiert durch
                         \begin{tikzpicture}
-                            \node[state, initial]{};
+                            \node[state, initial, scale = 0.4]{};
                         \end{tikzpicture}
                         % \begin{tikzpicture}
                         %     \draw[->] (0,0) -- (2,0);
@@ -430,7 +444,7 @@ Szenario: Ihr Chef beauftragt Sie ein Problem zu lösen, welches wenn es nicht i
                         % \end{tikzpicture}
                   \item einem oder mehrere Engzustünden, markiert durch
                         \begin{tikzpicture}
-                            \node[state, accepting]{};
+                            \node[state, accepting, scale = 0.4]{};
                         \end{tikzpicture}
               \end{description}
         \item Durch Angabe der Zustände, Eingaben, Übergangsfunktionen und Zielzustände, dies führt zur folgenden Definition:
