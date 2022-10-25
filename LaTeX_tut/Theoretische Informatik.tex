@@ -464,7 +464,7 @@ Szenario: Ihr Chef beauftragt Sie ein Problem zu lösen, welches wenn es nicht i
     Gemäß Def. 3.1 kann ein Automat nur einzelne Zeichen verarbeiten, wir verallgemeinern daher \(\delta\) wie folgt:
 
     \begin{tcolorbox}[title = Definition 3.2]
-        Für einen endlichen Automaten ist die erweiterte Zustandsübergangsfunktion \(\delta^*\) definiert durch:
+        Für einen endlichen Automaten ist die erweiterte Zustandsübergangsfunktion \(\hat{\delta}\) definiert durch:
 
         \begin{equation*}
             \hat{\delta}_n(q, w_1 \ldots w_n) = \begin{cases}
@@ -477,11 +477,91 @@ Szenario: Ihr Chef beauftragt Sie ein Problem zu lösen, welches wenn es nicht i
         % \begin{equation*}
         %     \delta^*(q_0, w) = \delta^*(\delta(q_0, w_1), w_2) = \ldots = \delta^*(\delta^*(q_0, w_1), w_2) = \ldots = \delta^*(\delta^*(\ldots, w_{n-1}), w_n)
         % \end{equation*}
-        Für ein beliebiges w \(\in \Sigma^*\) mit \(|w| = m\) definieren wir \(\hat{\delta}(q, w)\) = \(\hat{\delta}_m(q, w)\).
-
-        Oft ist \(\delta\) und damit auch \(\hat{\delta}\) nicht total, d.h. für eine Kombination aus \((q, w)\) ist kein Nachfolgezustand definiert. In diesen Fall `hängt' der Automat, d.h. er befindet sich in `keinem' Zustand.
-
+        Für ein beliebiges w \(\in \Sigma^*\) mit \(|\text{w}| = m\) definieren wir \(\hat{\delta}(q, w)\) = \(\hat{\delta}_m(q, w)\).
     \end{tcolorbox}
+
+    Oft ist \(\delta\) und damit auch \(\hat{\delta}\) nicht total, d.h. für eine Kombination aus \((q, w)\) ist kein Nachfolgezustand definiert. In diesen Fall `hängt' der Automat, d.h. er befindet sich in `keinem' Zustand.
+
+    \begin{tcolorbox}[title = Definition 3.3]
+        % Ein endlicher Automat \((Q, \Sigma, \delta, q_0, F)\) heißt \emph{deterministisch}, wenn \(\delta\) total ist.
+        Für einen endlichen Automaten M = \((\text{Q}, \Sigma, \delta, \text{q}_0, \text{F})\) ist die von M \emph{akzeptierte Sprache} \(\Lagr_\text{M}\) definiert durch:
+
+        \begin{equation*}
+            \Lagr_\text{M} = \{w \in \Sigma^* \mid \hat{\delta}(\text{q}_0, w) \in \text{F}\}
+        \end{equation*}
+
+        Mit anderen Worten: Gerät der Automat in einen Zustand aus Q\textbackslash F oder hängt er, wird das Wort nicht akzeptiert.
+
+
+        Der Automat akzeptiert also alle Wörter, die in einem Endzustand enden.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[title = Satz 3.1]
+        \textit{Zu jeder Typ-3-Grammatik G = (V, T, P, S) gibt es einen endlichen Automaten \(M = (Q, \Sigma, \delta, q_0, F)\), so dass \(\Lagr_G = \Lagr_M\) und umgekehrt.}
+    \end{tcolorbox}
+
+    % Wir definieren den Automaten wie folgt:
+    % \begin{itemize}[-]
+    %     \item \(Q\) ist die Menge der Variablen \(V\)
+    %     \item \(\Sigma\) ist die Menge der Termini \(T\)
+    %     \item \(\delta\) ist die Übergangsfunktion der Grammatik \(P\)
+    %     \item \(q_0\) ist der Startzustand \(S\)
+    %     \item \(F\) ist die Menge der Endzustände \(V\)
+    % \end{itemize}
+
+    Wir benötigen für den Beweis noch ergänzende Definitionen um ihn in beiden Richtungen zeigen zu können.
+
+    Zunächst zeigen wir, dass \(\Lagr_G = \Lagr_M\) ist
+
+    Dies funktioniert wie folgt:
+
+    \begin{itemize}[-]
+        \item Setze V = Q, d.h. für jeden Zustand, q e x eine Variable v.
+        \item Setze T = \(\Sigma\)
+        \item Setze P = \(\{\text{V}_{q1} \rightarrow \text{t V}_{qz} \ |\  \delta(q_1, \text{t})\}\ \cup \{\text{V}_{q1} \rightarrow \text{t}\ |\  \delta(q_1, \text{t})\}\)
+        \item S = V\(_{q0}\)
+    \end{itemize}
+
+    Falls w = w\(_1\ldots\)w\(_n \in \Lagr_\text{M}\), so ist \(\hat{\delta}(q_0, \text{w}) = q_x\) gilt, gilt dann wenn es ein aus V\(_{q0}\) ableitbare Wortform \(\text{w}_1, \text{w}_2\ldots\text{w}_n \ \text{V}_{qx}\) gibt. Wegen der Definition von P ist aber, falls q\(_x\in\) F liegt, auch die Produktion vorhanden, die w\(_n\) ohne V\(_{qx}\) erzeugt.
+
+    Der umgekehrte Weg ist komplex, da:
+
+    \begin{itemize}[-]
+        \item Grammatiken in einen Schritt beliebig viele Terminale erzeugen können:
+              \(\text{A} \rightarrow \text{bedef G}\). Das ist durch eine lokale Änderung der Produktionen erreichbar:
+              \(\text{A} \rightarrow \text{bA}', \text{A} \rightarrow \text{cA}'', \text{A}'' \rightarrow \text{dA}''', \text{A}''' \rightarrow \text{eA}'''', \text{A}'''' \rightarrow \text{fG}\), wobei A', A'' \ldots\ in keine andere Produktionen vorkommen dürfte.
+
+        \item Grammatiken können Kettenproduktionen enthalten \((\text{A} \rightarrow \text{B})\), diese können nach Satz 1.2 eliminiert werden.
+        \item Ableitungen enden typisch mit einer Produktion  \(\text{A} \rightarrow \text{b}\). Dort ersetzen wir die Produktion durch etwas offensichtlich äquivalenten: \(\text{A} \rightarrow \text{bA}', \text{A}' \rightarrow \varepsilon\).
+        \item \(\varepsilon\)-Produktionen werden zu Endzuständen, d.h. wenn \(\text{x} \rightarrow \varepsilon\) in P ist, so ist \(\text{V}_x \in \text{F}\).
+        \item Grammatiken sind ggf. nicht eindeutig, z.B. bei der Erkennung ganzer Zahlen in Java:
+
+              %       \begin{lstlisting}[language=Java]
+              %     int i = 0;
+              %     while (i < 10) {
+              %         i = i + 1;
+              %     }
+              % \end{lstlisting}
+
+              Z \(\rightarrow\) 0 \(<\text{irgendwas oktales}> |\)
+              0x \(<\text{irgendwas oktales}> |\)
+              0b \(<\text{irgendwas binäres}> |\)
+              1-9 \(<\text{irgendwas dezimales}>\)
+    \end{itemize}
+
+    Wir unterbrechen den Beweis von Satz 3.1 daheim definieren
+
+
+    \begin{tcolorbox}[title = Definition 3.4]
+        Ein \emph{nichtdeterministischer endlicher Automat} \(\text{M} = (\text{Q}, \Sigma, \delta, q_0, \text{F})\) ist eine Verallgemeinerung (deterministischen) endlichen Automaten, mit folgenden Unterschieden:
+        \begin{itemize}[-]
+            \item \(\delta : \text{Q } \times\ \Sigma \rightarrow P(\text{Q})\) definiert für eine Kombination aus Zustand und Zeichen mehrere mögliche Nachfolgezustände
+            \item \(\delta\) ist total, indem ggf. \(\delta(q_i, i) = \emptyset\) gilt.
+        \end{itemize}
+
+        Ebenso müssen auch noch die Definition der erweiterten Zustandsübergangsfunktion und der der Akzeptanz angepasst werden.
+    \end{tcolorbox}
+
 
 \end{flushleft}
 
